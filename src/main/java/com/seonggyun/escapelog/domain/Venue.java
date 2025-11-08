@@ -1,15 +1,33 @@
 package com.seonggyun.escapelog.domain;
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Venue {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "venue_id")
     private Long id;
+
     private String name;
     private String region;
+
+    @OneToMany(mappedBy = "venue", cascade = CascadeType.ALL, orphanRemoval = false)
     private List<Theme> themes = new ArrayList<>();
 
     public Venue(String name, String region) {
