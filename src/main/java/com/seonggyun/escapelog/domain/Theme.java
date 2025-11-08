@@ -1,35 +1,61 @@
 package com.seonggyun.escapelog.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.Set;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Theme {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "theme_id")
     private Long id;
-    private Long venueId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "venue_id", nullable = false)
+    private Venue venue;
     private String title;
     private Integer difficulty;
     private Integer durationMin;
     private Integer minPlayer;
     private Integer maxPlayer;
+
+    @ElementCollection(targetClass = Genre.class)
+    @Enumerated(EnumType.STRING)
     private Set<Genre> genres = EnumSet.noneOf(Genre.class);
 
-    public Theme(Long venueId, String title, Integer difficulty, Integer durationMin, Integer minPlayer,
+    public Theme(Venue venue, String title, Integer difficulty, Integer durationMin, Integer minPlayer,
                  Integer maxPlayer, Set<Genre> genres) {
 
-        this.venueId = venueId;
+        this.venue = venue;
         this.title = title;
         this.difficulty = difficulty;
         this.durationMin = durationMin;
         this.minPlayer = minPlayer;
         this.maxPlayer = maxPlayer;
-        this.genres = genres;
+        this.genres = EnumSet.copyOf(genres); //외부에서 genres를 변경해도 객체 내부 genres는 안 바뀜
         validate();
+        venue.addTheme(this);  //venue의 테마리스트에도 추가해준다.
     }
 
-    private void validate(){
+    private void validate() {
         validateVenueId();
         validateTitle();
         validateDifficulty();
@@ -39,7 +65,7 @@ public class Theme {
     }
 
     private void validateVenueId() {
-        if (venueId == null) {
+        if (venue == null) {
             throw new IllegalArgumentException("테마는 매장에 속해야 합니다.");
         }
     }
@@ -72,7 +98,7 @@ public class Theme {
     }
 
     private void validatePlayers() {
-        if(minPlayer==null||minPlayer<1){
+        if (minPlayer == null || minPlayer < 1) {
             throw new IllegalArgumentException("최소 인원은 1명 이상입니다.");
         }
         if (maxPlayer == null || maxPlayer < minPlayer) {
@@ -80,7 +106,7 @@ public class Theme {
         }
     }
 
-    private void validateGenre(){
+    private void validateGenre() {
         if (genres == null || genres.isEmpty()) {
             throw new IllegalArgumentException("하나 이상의 장르가 필요합니다.");
         }
@@ -89,8 +115,12 @@ public class Theme {
     // 동일성 비교
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Theme)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Theme)) {
+            return false;
+        }
         Theme theme = (Theme) o;
         return Objects.equals(id, theme.id);
     }
