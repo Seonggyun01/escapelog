@@ -16,7 +16,7 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("영어와_숫자_조합으로_멤버를_생성할_수_있다")
+    @DisplayName("영어와 숫자 조합으로 멤버를 생성할 수 있다")
     void 영어_숫자_조합_멤버_생성_테스트() {
         Member member = new Member("Seonggyun123");
         assertThat(member.getName()).isEqualTo("Seonggyun123");
@@ -39,7 +39,7 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("이름에_특수문자가_포함되면_예외가_발생한다")
+    @DisplayName("이름에 특수문자가 포함되면 예외가 발생한다")
     void 특수문자_포함_예외_발생() {
         assertThatThrownBy(() -> new Member("홍성균!"))
                 .isInstanceOf(IllegalArgumentException.class)
@@ -47,7 +47,7 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("이름이_50자를_초과하면_예외가_발생한다")
+    @DisplayName("이름이 50자를 초과하면 예외가 발생한다")
     void 이름_50자_초과_예외_발생() {
         String longName = "a".repeat(51); // 51자
         assertThatThrownBy(() -> new Member(longName))
@@ -56,7 +56,7 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("이름이_정확히_50자이면_정상적으로_생성된다")
+    @DisplayName("이름이 정확히 50자이면 정상적으로 생성된다")
     void 이름_50자_정상_생성() {
         String maxName = "a".repeat(50);
         Member member = new Member(maxName);
@@ -64,7 +64,7 @@ class MemberTest {
     }
 
     @Test
-    @DisplayName("이름이_숫자만으로_정상_생성된다")
+    @DisplayName("이름이 숫자만으로 정상 생성된다")
     void 숫자만으로_정상_생성() {
         Member member = new Member("12345");
         assertThat(member.getName()).isEqualTo("12345");
