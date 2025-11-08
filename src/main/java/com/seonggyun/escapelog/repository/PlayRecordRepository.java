@@ -1,4 +1,7 @@
 package com.seonggyun.escapelog.repository;
 
-public interface PlayRecordRepository {
+import com.seonggyun.escapelog.domain.PlayRecord;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PlayRecordRepository extends JpaRepository<PlayRecord, Long> {
 }
