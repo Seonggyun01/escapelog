@@ -1,14 +1,37 @@
 package com.seonggyun.escapelog.domain;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import java.util.Objects;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Entity
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class PlayRecord {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "play_record_id")
     private Long id;
-    private Long memberId;
-    private Long themeId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "theme_id")
+    private Theme theme;
+
     private LocalDate playDate;
     private Boolean cleared;
     private int clearTimeSec;
@@ -16,10 +39,10 @@ public class PlayRecord {
     private int rating;
     private String comment;
 
-    public PlayRecord(Long memberId, Long themeId, LocalDate playDate, Boolean cleared, int clearTimeSec, int hintCount,
+    public PlayRecord(Member member, Theme theme, LocalDate playDate, Boolean cleared, int clearTimeSec, int hintCount,
                       int rating, String comment) {
-        this.memberId = memberId;
-        this.themeId = themeId;
+        this.member = member;
+        this.theme = theme;
         this.playDate = playDate;
         this.cleared = cleared;
         this.clearTimeSec = clearTimeSec;
@@ -43,13 +66,13 @@ public class PlayRecord {
 
 
     private void validateMemberId() {
-        if (memberId == null) {
+        if (member == null) {
             throw new IllegalArgumentException("회원 정보가 누락되었습니다.");
         }
     }
 
     private void validateTheme() {
-        if (themeId == null) {
+        if (theme == null) {
             throw new IllegalArgumentException("테마 정보가 누락되었습니다.");
         }
     }
@@ -77,23 +100,24 @@ public class PlayRecord {
         }
         if (!cleared) {
             if (clearTimeSec != 0) {
-                throw new IllegalArgumentException("실패한 기록에는 클리어 시간을 입력할 수 없습니다,");
+                throw new IllegalArgumentException("실패한 기록에는 클리어 시간을 입력할 수 없습니다.");
             }
         }
     }
 
-    private void validateHintCount(){
+    private void validateHintCount() {
         if (hintCount < 0) {
             throw new IllegalArgumentException("힌트 사용 개수는 음수일 수 없습니다.");
         }
     }
-    private void validateRating(){
+
+    private void validateRating() {
         if (rating < 1 || rating > 5) {
             throw new IllegalArgumentException("평점은 1~5점 사이여야 합니다.");
         }
     }
 
-    private void validateComment(){
+    private void validateComment() {
         if (comment != null && comment.length() > 500) {
             throw new IllegalArgumentException("후기는 500자 이하로 입력해주세요.");
         }
@@ -102,8 +126,12 @@ public class PlayRecord {
     // 동일성 비교
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof PlayRecord)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof PlayRecord)) {
+            return false;
+        }
         PlayRecord that = (PlayRecord) o;
         return Objects.equals(id, that.id);
     }
