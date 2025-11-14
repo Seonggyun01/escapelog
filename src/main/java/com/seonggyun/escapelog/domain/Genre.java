@@ -20,7 +20,23 @@ public enum Genre {
     PUZZLE("퍼즐"),
     DRAMA("드라마"),
     COMEDY("코믹"),
-    MELO("감성");
+    MELO("감성"),
+    HISTORY("역사"),
+    MYSTERY_KR("미스테리"),
+    GAG("개그"),
+    ARCADE("아케이드"),
+    INVESTIGATION("수사"),
+    ACTION("액션"),
+    COOP("협동"),
+    EXPLORATION("탐험"),
+    HIPHOP("힙합"),
+    LOVE("연애"),
+    ROMANCE("로맨스"),
+    DARK_FAIRYTALE("잔혹동화"),
+    SLICE_OF_LIFE("일상"),
+    COMEDY_KR("코미디"),
+    TOUCHING("감동"),
+    ADVENTURE_KR("어드벤처");
 
     private final String koreanName;
 
