@@ -28,7 +28,7 @@ public class Member {
     @Column(nullable = false)
     private String password;  //실제 서비스는 암호화 필수!
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
 
     public Member(String loginId, String password, String name) {
