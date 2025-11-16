@@ -1,6 +1,4 @@
 package com.seonggyun.escapelog.service;
-
-import com.seonggyun.escapelog.AuthException;
 import com.seonggyun.escapelog.domain.Member;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import java.util.List;
@@ -77,7 +75,7 @@ public class MemberService {
     public Member login(String loginId, String password) {
 
         Member loginMember = memberRepository.findByLoginId(loginId)
-                .orElseThrow(() -> new AuthException("이미 가입안된 사람입니다."));
+                .orElseThrow(() -> new IllegalArgumentException("이미 가입안된 사람입니다."));
 
         if(loginMember.getPassword().equals(password)){
             return loginMember;
