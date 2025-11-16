@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<body>
+<!-- ✅ 대시보드 전용 헤더 -->
+<header th:fragment="dashboard-header(activeMenu)"
+        class="main-header border-bottom border-border">
+    <nav class="navbar navbar-expand-md navbar-light bg-card container h-100">
+
+        <!-- 로고 -->
+        <a th:href="@{/dashboard}"
+           class="navbar-brand d-flex align-items-center gap-2 fw-bold text-foreground fs-4 text-decoration-none">
+            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                 style="width: 32px; height: 32px; background-color: var(--primary); color: #ffffff;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                     viewBox="0 0 24 24" fill="none"
+                     stroke="currentColor" stroke-width="2">
+                    <path d="M6 10V8a6 6 0 0 1 12 0v2" />
+                    <rect x="4" y="10" width="16" height="10" rx="2" ry="2" />
+                </svg>
+            </div>
+            EscapeLog
+        </a>
+
+        <!-- 가운데 메뉴 -->
+        <div class="collapse navbar-collapse justify-content-center">
+            <ul class="navbar-nav align-items-center nav-center">
+                <li class="nav-item">
+                    <a th:href="@{/dashboard}"
+                       class="nav-link px-3 fw-semibold"
+                       th:classappend="${activeMenu} == 'dashboard' ? ' text-primary' : ' text-muted'">
+                        대시보드
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/venues}"
+                       class="nav-link px-3 fw-semibold"
+                       th:classappend="${activeMenu} == 'venues' ? ' text-primary' : ' text-muted'">
+                        매장 목록
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/themes}"
+                       class="nav-link px-3 fw-semibold"
+                       th:classappend="${activeMenu} == 'themes' ? ' text-primary' : ' text-muted'">
+                        테마 목록
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a th:href="@{/playRecords}"
+                       class="nav-link px-3 fw-semibold"
+                       th:classappend="${activeMenu} == 'records' ? ' text-primary' : ' text-muted'">
+                        플레이 기록
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 오른쪽 버튼: ✅ bodyHeader와 동일한 둥근 네모 스타일 -->
+        <div class="navbar-end d-flex align-items-center gap-2">
+            <a th:href="@{/profile}" class="nav-btn nav-btn-outline text-decoration-none">
+                내 프로필
+            </a>
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="nav-btn nav-btn-outline text-decoration-none">
+                    로그아웃
+                </button>
+            </form>
+        </div>
+
+    </nav>
+</header>
+</body>
+</html>

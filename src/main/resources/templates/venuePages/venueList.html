@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8" />
+    <title>매장 목록 - EscapeLog</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+    <link rel="stylesheet" th:href="@{/css/custom.css}" />
+</head>
+<body class="bg-background text-foreground">
+
+<!-- ✅ 공통 대시보드 헤더 -->
+<div th:replace="fragments/dashboardHeader :: dashboard-header('venues')"></div>
+
+<main class="container py-5">
+
+    <h2 class="mb-4">📍 등록된 매장 목록</h2>
+
+    <div class="d-flex justify-content-end mb-3">
+        <a th:href="@{/venues/new}" class="btn btn-primary">＋ 새 매장 등록</a>
+    </div>
+
+    <table class="table table-hover align-middle shadow-sm bg-card">
+        <thead class="table-light">
+        <tr>
+            <th>번호</th>
+            <th>매장명</th>
+            <th>지역</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="venue, iterStat : ${venues}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${venue.name}">홍대 이스케이프 룸</td>
+            <td th:text="${venue.region}">서울 홍대</td>
+        </tr>
+        <tr th:if="${#lists.isEmpty(venues)}">
+            <td colspan="3" class="text-center text-muted py-4">등록된 매장이 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/dashboard}" class="btn btn-outline-secondary mt-3">대시보드로 돌아가기</a>
+
+</main>
+
+</body>
+</html>

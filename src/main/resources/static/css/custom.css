@@ -1,0 +1,337 @@
+/* =========================
+   COLOR TOKENS & BASE
+   ========================= */
+:root {
+  --bg: #f5f6f8;          /* 밝은 회색 배경 */
+  --fg: #161827;          /* 기본 텍스트 */
+  --card-bg: #ffffff;
+  --card-fg: #111111;
+  --primary: #312e81;     /* 진한 인디고 */
+  --primary-fg: #ffffff;
+  --secondary: #22c55e;
+  --accent: #f97316;
+  --muted-bg: #edeff3;
+  --border-color: #e2e4ea;
+  --header-height: 80px;
+}
+
+/* 기본 폰트/레이아웃 */
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  font-weight: 500;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* =========================
+   UTIL CLASSES
+   ========================= */
+.bg-background { background-color: var(--bg); }
+.text-foreground { color: var(--fg); }
+
+.bg-card { background-color: var(--card-bg); }
+.text-card-foreground { color: var(--card-fg); }
+
+.bg-muted-30 { background-color: rgba(237,239,243,0.9); }
+.bg-primary-soft { background-color: rgba(49,46,129,0.10); }
+.bg-primary-soft-2 { background-color: rgba(49,46,129,0.06); }
+.bg-secondary-soft { background-color: rgba(34,197,94,0.10); }
+.bg-accent-soft { background-color: rgba(249,115,22,0.10); }
+
+.text-muted-foreground {
+  color: #6b7280 !important;
+  font-weight: 500;
+}
+
+.text-primary {
+  color: var(--primary) !important;
+}
+
+/* 버튼/로고 등 공통 primary 배경색 통일 */
+.bg-primary {
+  background-color: var(--primary) !important;
+  color: var(--primary-fg);
+}
+
+.border-border { border-color: var(--border-color) !important; }
+
+/* =========================
+   HEADER / NAVIGATION
+   ========================= */
+.main-header {
+  height: var(--header-height);
+  background-color: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+}
+
+/* 가운데 메뉴 간격/스타일 */
+.nav-center {
+  gap: 2.2rem; /* 기능 / 사용법 / 통계 간격 */
+}
+
+.nav-link.hover-nav {
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #6b7280;
+  position: relative;
+  padding: 0.4rem 0;
+  transition: color 0.2s ease;
+}
+
+.nav-link.hover-nav:hover {
+  color: var(--primary);
+}
+
+.nav-link.hover-nav::after {
+  content: "";
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--primary);
+  transition: width 0.25s ease;
+}
+
+.nav-link.hover-nav:hover::after {
+  width: 100%;
+}
+
+/* 오른쪽 버튼 영역 */
+.navbar-end {
+  display: flex;
+  align-items: center;
+  gap: 1rem; /* 로그인 / 시작하기 간격 */
+}
+
+/* 공통 버튼 스타일 (헤더용) */
+.nav-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;          /* 둥근 네모 */
+  border-width: 1px;
+  border-style: solid;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.nav-btn-outline {
+  background-color: transparent;
+  color: var(--fg);
+  border-color: var(--border-color);
+}
+.nav-btn-outline:hover {
+  background-color: #f9fafb;
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.nav-btn-primary {
+  background-color: var(--primary);
+  color: var(--primary-fg);
+  border-color: var(--primary);
+}
+.nav-btn-primary:hover {
+  background-color: #211f6a;
+  border-color: #211f6a;
+}
+
+/* =========================
+   TYPOGRAPHY
+   ========================= */
+
+/* Hero 메인 타이틀 */
+.hero-title {
+  font-size: clamp(3.2rem, 5.4vw, 4.6rem);
+  font-weight: 800;
+  color: #111111;
+  letter-spacing: -0.03em;
+  line-height: 1.18;
+}
+.hero-title .text-primary {
+  color: var(--primary) !important;
+}
+
+/* 다른 제목들 */
+h1, h2:not(.hero-title), h3, h4, h5, h6 {
+  font-weight: 700;
+  color: #111111;
+}
+
+/* 문단/리드 */
+.lead, p, span, li {
+  font-weight: 500;
+}
+
+/* =========================
+   BUTTONS (공통)
+   ========================= */
+.btn {
+  font-weight: 600 !important;
+  border-radius: 999px;
+  padding-inline: 1.6rem;
+  padding-block: 0.75rem;
+}
+
+.btn-primary-soft {
+  background-color: var(--primary);
+  color: var(--primary-fg);
+  border-color: var(--primary);
+}
+.btn-primary-soft:hover {
+  background-color: #211f6a;
+  border-color: #211f6a;
+}
+
+/* =========================
+   CARDS
+   ========================= */
+.card-ghost {
+  background-color: var(--card-bg);
+  color: var(--card-fg);
+  border: 1px solid var(--border-color);
+  border-radius: 1.5rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease, border-color 0.2s ease;
+}
+.card-ghost:hover {
+  box-shadow: 0 18px 40px rgba(15,23,42,0.10);
+  transform: translateY(-2px);
+  border-color: rgba(49,46,129,0.35);
+}
+
+/* =========================
+   SECTIONS
+   ========================= */
+.section-padding {
+  padding-top: 5rem;
+  padding-bottom: 5rem;
+}
+@media (min-width: 768px) {
+  .section-padding-lg {
+    padding-top: 7rem;
+    padding-bottom: 7rem;
+  }
+}
+
+/* 화면 꽉 채우는 느낌 (헤더 제외) */
+.full-section {
+  min-height: calc(100vh - var(--header-height));
+  display: flex;
+  align-items: center;
+}
+
+/* =========================
+   PING DOT
+   ========================= */
+.ping-dot {
+  position: relative;
+  display: inline-flex;
+  width: 8px;
+  height: 8px;
+}
+.ping-dot::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background-color: var(--primary);
+  opacity: 0.7;
+  animation: ping 1s cubic-bezier(0,0,0.2,1) infinite;
+}
+.ping-dot::after {
+  content: "";
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background-color: var(--primary);
+}
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.7; }
+  75%, 100% { transform: scale(2); opacity: 0; }
+}
+
+/* =========================
+   Stats Section
+   ========================= */
+#stats .rounded-circle {
+  width: 128px !important;
+  height: 128px !important;
+}
+
+#stats .rounded-circle svg {
+  width: 64px !important;
+  height: 64px !important;
+}
+
+#stats .display-5 {
+  font-size: 4rem !important;
+  font-weight: 800;
+}
+
+#stats p.text-muted-foreground {
+  font-size: 1.25rem !important;
+  font-weight: 600;
+}
+
+/* =========================
+   HOW IT WORKS SECTION
+   ========================= */
+#how-it-works .d-flex.flex-md-row {
+  margin-bottom: 2.5rem;
+}
+
+#how-it-works .rounded-circle {
+  width: 90px !important;
+  height: 90px !important;
+  font-size: 2rem !important;
+  font-weight: 700;
+  flex-shrink: 0;
+  align-self: flex-start;
+}
+
+#how-it-works .bg-primary {
+  background-color: #9370DB !important;
+}
+#how-it-works .bg-secondary {
+  background-color: #7B68EE !important;
+}
+#how-it-works .bg-accent {
+  background-color: #483D8B !important;
+  color: #ffffff !important;
+}
+
+#how-it-works h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+#how-it-works p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* =========================
+   Hero Badge ping-dot 간격 조정
+   ========================= */
+.ping-dot {
+  margin-right: 0.6rem !important;
+  vertical-align: middle;
+}
+/* =========================
+   USER GREETING / WELCOME TEXT
+   ========================= */
+.welcome-text {
+  font-size: 1.25rem;   /* 기본보다 약간 크게 */
+  font-weight: 600;     /* 살짝 굵게 */
+  color: var(--fg);
+}
+

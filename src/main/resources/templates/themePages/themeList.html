@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>테마 목록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+
+<body class="bg-background text-foreground">
+<!-- ✅ 공통 대시보드 헤더 -->
+<div th:replace="fragments/dashboardHeader :: dashboard-header('themes')"></div>
+
+<main class="container py-5">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold mb-0">🔒 등록된 테마 목록</h2>
+        <a th:href="@{/themes/new}" class="btn btn-primary">＋ 새 테마 등록</a>
+    </div>
+
+    <table class="table table-hover align-middle shadow-sm bg-card">
+        <thead class="table-light">
+        <tr>
+            <th>번호</th>
+            <th>테마명</th>
+            <th>매장</th>
+            <th>난이도</th>
+            <th>제한 시간</th>
+            <th>인원</th>
+            <th>장르</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="theme, iterStat : ${themes}">
+            <td th:text="${iterStat.count}">1</td>
+            <td th:text="${theme.title}">사라진 연구소의 비밀</td>
+            <td th:text="${theme.venue.name}">홍대 이스케이프 룸</td>
+            <td th:text="${theme.difficulty} ?: '-'">3</td>
+            <td th:text="${theme.durationMin != null ? theme.durationMin + '분' : '-'}">60분</td>
+            <td th:text="${theme.minPlayer + ' ~ ' + theme.maxPlayer + '명'}">2~6명</td>
+            <td>
+                <span class="badge bg-white border text-primary me-1"
+                th:each="g : ${theme.genres}"
+                th:text="${g}">
+        Genre
+    </span>
+            </td>
+        </tr>
+
+        <tr th:if="${#lists.isEmpty(themes)}">
+            <td colspan="7" class="text-center text-muted py-4">등록된 테마가 없습니다.</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <a th:href="@{/dashboard}" class="btn btn-outline-secondary mt-3">대시보드로 돌아가기</a>
+</main>
+</body>
+</html>

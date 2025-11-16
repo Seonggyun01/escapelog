@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>매장 등록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body class="bg-light py-5">
+
+<div class="container d-flex justify-content-center">
+    <div class="w-100" style="max-width: 600px;">
+        <h2 class="mb-4 text-center">🏠 매장 등록</h2>
+
+        <form th:action="@{/venues/new}" th:object="${venueForm}" method="post"
+              class="border p-4 rounded bg-white shadow-sm">
+
+            <div class="mb-3">
+                <label for="name" class="form-label fw-bold">매장명</label>
+                <input type="text" th:field="*{name}" id="name" class="form-control"
+                       placeholder="예: 홍대 이스케이프 룸" required>
+            </div>
+
+            <div class="mb-3">
+                <label for="region" class="form-label fw-bold">지역</label>
+                <input type="text" th:field="*{region}" id="region" class="form-control"
+                       placeholder="예: 서울 홍대" required>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a th:href="@{/venues}" class="btn btn-outline-secondary">목록으로</a>
+                <button type="submit" class="btn btn-primary px-4">등록하기</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>
