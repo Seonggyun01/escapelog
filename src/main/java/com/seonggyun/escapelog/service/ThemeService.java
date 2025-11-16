@@ -15,39 +15,36 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class ThemeService {
+
+    private static final String ERROR_VENUE_NOT_FOUND = "해당 매장을 찾을 수 없습니다.";
+    private static final String ERROR_THEME_NOT_FOUND = "해당 테마를 찾을 수 없습니다.";
+
     private final ThemeRepository themeRepository;
     private final VenueRepository venueRepository;
 
-    /**
-     * 테마 저장
-     */
     @Transactional
-    public Long saveTheme(Long venueId, String title, Integer difficulty, Integer durationMin, Integer minPlayer,
-                          Integer maxPlayer, Set<Genre> genres) {
-        Venue venue = venueRepository.findById((venueId)).get();
+    public Long saveTheme(Long venueId, String title, Integer difficulty, Integer durationMin,
+                          Integer minPlayer, Integer maxPlayer, Set<Genre> genres) {
+
+        Venue venue = venueRepository.findById(venueId)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_VENUE_NOT_FOUND)); //get()->orElseThrow()
+
         Theme theme = new Theme(venue, title, difficulty, durationMin, minPlayer, maxPlayer, genres);
+
         themeRepository.save(theme);
         return theme.getId();
     }
 
-    /**
-     * 전체 조회
-     */
-    public List<Theme> findAll(){
+    public List<Theme> findAll() {
         return themeRepository.findAll();
     }
 
-    /**
-     * 단건 조회
-     */
-    public Theme findOne(Long id){
-        return themeRepository.findById(id).get();
+    public Theme findOne(Long id) {
+        return themeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_THEME_NOT_FOUND)); //get()->orElseThrow()
     }
 
-    /**
-     * 매장명으로 테마 조회
-     */
-    public List<Theme> findByVenueId(Long id){
+    public List<Theme> findByVenueId(Long id) {
         return themeRepository.findByVenueId(id);
     }
 }

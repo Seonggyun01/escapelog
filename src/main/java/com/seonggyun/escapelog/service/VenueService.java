@@ -11,35 +11,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class VenueService {
+
+    private static final String ERROR_VENUE_NOT_FOUND = "해당 매장을 찾을 수 없습니다.";
+
     private final VenueRepository venueRepository;
 
-    /**
-     * 매장 등록
-     */
     @Transactional
-    public Long saveVenue(String name, String region){
+    public Long saveVenue(String name, String region) {
         Venue venue = new Venue(name, region);
         venueRepository.save(venue);
         return venue.getId();
     }
 
-    /**
-     * 전체 조회
-     */
-    public List<Venue> findAll(){
+    public List<Venue> findAll() {
         return venueRepository.findAll();
     }
 
-    /**
-     * 단건 조회
-     */
-    public Venue findOne(Long id){
-        return venueRepository.findById(id).get();
+    public Venue findOne(Long id) {
+        return venueRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_VENUE_NOT_FOUND)); // get()->orElseThrow()
     }
 
-    /**
-     * 매장명 조회
-     */
     public List<Venue> findByName(String name) {
         return venueRepository.findByNameContainingIgnoreCase(name);
     }

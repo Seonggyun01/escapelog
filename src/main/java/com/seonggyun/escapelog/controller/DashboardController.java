@@ -2,7 +2,7 @@ package com.seonggyun.escapelog.controller;
 
 import com.seonggyun.escapelog.domain.Member;
 import com.seonggyun.escapelog.domain.PlayRecord;
-import com.seonggyun.escapelog.form.DashBoardDto; // 👉 너가 만든 DTO 경로/이름에 맞춰줘
+import com.seonggyun.escapelog.form.DashBoardDto;
 import com.seonggyun.escapelog.service.PlayRecordService;
 import jakarta.servlet.http.HttpSession;
 import java.util.List;
@@ -19,20 +19,17 @@ public class DashboardController {
 
     @GetMapping("/dashboard")
     public String showDashboard(HttpSession session, Model model) {
-        // 1. 로그인 체크
         Member loginMember = (Member) session.getAttribute("loginMember");
         if (loginMember == null) {
             return "redirect:/login";
         }
 
-        // 2. 통계 데이터 조회 (PlayRecordService에 구현되어 있어야 함)
         long totalPlays = playRecordService.countByMember(loginMember);
         int successRate = playRecordService.calculateSuccessRate(loginMember);
         long storeCount = playRecordService.countDistinctVenueByMember(loginMember);
         String avgTime = playRecordService.getAverageClearTimeFormatted(loginMember);
         List<PlayRecord> recentPlays = playRecordService.getRecentPlays(loginMember);
 
-        // 3. DTO 생성
         DashBoardDto dashboard = DashBoardDto.builder()
                 .totalPlays(totalPlays)
                 .successRate(successRate)
@@ -40,12 +37,10 @@ public class DashboardController {
                 .avgTime(avgTime)
                 .build();
 
-        // 4. 뷰에 전달
         model.addAttribute("memberName", loginMember.getName());
         model.addAttribute("dashboard", dashboard);
         model.addAttribute("recentPlays", recentPlays);
 
-        // 5. templates/dashboard.html 렌더링
         return "dashboard";
     }
 }

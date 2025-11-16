@@ -18,6 +18,14 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PlayRecordService {
+
+    private static final String ERROR_MEMBER_NOT_FOUND = "해당 회원을 찾을 수 없습니다.";
+    private static final String ERROR_THEME_NOT_FOUND = "해당 테마를 찾을 수 없습니다.";
+    private static final String ERROR_PLAY_RECORD_NOT_FOUND = "해당 플레이 기록을 찾을 수 없습니다.";
+
+    private static final String ZERO_MINUTES = "0분";
+    private static final String MINUTES_TEMPLATE = "%d분";
+
     private final MemberRepository memberRepository;
     private final ThemeRepository themeRepository;
     private final PlayRecordRepository playRecordRepository;
@@ -34,9 +42,14 @@ public class PlayRecordService {
             int clearTimeSec,
             int hintCount,
             int rating,
-            String comment) {
-        Member member = memberRepository.findById(memberId).orElseThrow();
-        Theme theme = themeRepository.findById(themeId).orElseThrow();
+            String comment
+    ) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_MEMBER_NOT_FOUND));
+
+        Theme theme = themeRepository.findById(themeId)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_THEME_NOT_FOUND));
+
         PlayRecord playRecord = new PlayRecord(
                 member,
                 theme,
@@ -45,7 +58,9 @@ public class PlayRecordService {
                 clearTimeSec,
                 hintCount,
                 rating,
-                comment);
+                comment
+        );
+
         playRecordRepository.save(playRecord);
         return playRecord.getId();
     }
@@ -61,18 +76,19 @@ public class PlayRecordService {
      * 단건 조회
      */
     public PlayRecord findById(Long id) {
-        return playRecordRepository.findById(id).get();
+        return playRecordRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException(ERROR_PLAY_RECORD_NOT_FOUND));
     }
 
     /**
-     * 맴버 아이디로 조회
+     * 멤버 ID로 조회
      */
     public List<PlayRecord> findByMember(Long memberId) {
         return playRecordRepository.findByMemberId(memberId);
     }
 
     /**
-     * 테마 아이디로 조회
+     * 테마 ID로 조회
      */
     public List<PlayRecord> findByTheme(Long themeId) {
         return playRecordRepository.findByThemeId(themeId);
@@ -110,7 +126,7 @@ public class PlayRecordService {
     public String getAverageClearTimeFormatted(Member member) {
         List<PlayRecord> records = playRecordRepository.findByMember(member);
         if (records.isEmpty()) {
-            return "0분";
+            return ZERO_MINUTES;
         }
 
         double avgSec = records.stream()
@@ -120,7 +136,7 @@ public class PlayRecordService {
                 .orElse(0);
 
         int minutes = (int) (avgSec / 60);
-        return minutes + "분";
+        return String.format(MINUTES_TEMPLATE, minutes);
     }
 
     /**
@@ -130,7 +146,6 @@ public class PlayRecordService {
         return playRecordRepository.findByMember(member).stream()
                 .sorted(Comparator.comparing(PlayRecord::getPlayDate).reversed())
                 .limit(3)
-                .collect(
-                        Collectors.toList());
+                .collect(Collectors.toList());
     }
 }
