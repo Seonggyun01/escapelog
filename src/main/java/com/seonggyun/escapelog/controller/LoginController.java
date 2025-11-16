@@ -25,8 +25,6 @@ public class LoginController {
                         RedirectAttributes redirectAttributes) {
         Member loginMember = memberService.login(loginId, password);
 
-        //Member loginMember = memberService
-
         if (loginMember == null) {
             redirectAttributes.addFlashAttribute("loginError", "아이디 또는 비밀번호 올바르지 않습니다.");
             return "redirect:/login";
