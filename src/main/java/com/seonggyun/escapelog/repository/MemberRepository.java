@@ -1,9 +1,10 @@
 package com.seonggyun.escapelog.repository;
 
 import com.seonggyun.escapelog.domain.Member;
-import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
-    List<Member> findByName(String name);
+    Optional<Member> findByLoginId(String loginId);
+    Optional<Member> findByName(String name);
 }
