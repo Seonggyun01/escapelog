@@ -39,6 +39,11 @@ public class ThemeController {
     public String createTheme(@Valid @ModelAttribute("themeForm") ThemeForm form,
                               BindingResult bindingResult,
                               Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("venues", venueService.findAll());
+            model.addAttribute("genres", Genre.values());
+            return "themePages/createTheme";
+        }
         themeService.saveTheme(form.getVenueId(),
                 form.getTitle(),
                 form.getDifficulty(),
