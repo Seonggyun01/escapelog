@@ -2,6 +2,7 @@ package com.seonggyun.escapelog.controller;
 
 import com.seonggyun.escapelog.form.MemberSignUpForm;
 import com.seonggyun.escapelog.service.MemberService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,14 +21,15 @@ public class SignUpController {
     }
 
     @PostMapping("/signup")
-    public String joinMember(@ModelAttribute("MemberSignUpForm") MemberSignUpForm form, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()){
+    public String joinMember(@Valid @ModelAttribute("MemberSignUpForm") MemberSignUpForm form,
+                             BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
             return "login/signup";
         }
 
-        try{
-            memberService.join(form.getLoginId(),form.getPassword(),form.getName());
-        } catch (IllegalArgumentException e){
+        try {
+            memberService.join(form.getLoginId(), form.getPassword(), form.getName());
+        } catch (IllegalArgumentException e) {
             bindingResult.reject("signupError", e.getMessage());
             return "login/signup";
         }
