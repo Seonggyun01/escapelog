@@ -1,4 +1,13 @@
 package com.seonggyun.escapelog.common;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class ErrorResponseDto {
+    private final int status;
+    private final String code;
+    private final String message;
+
 }
