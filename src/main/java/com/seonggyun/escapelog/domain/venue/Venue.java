@@ -1,5 +1,8 @@
-package com.seonggyun.escapelog.domain;
+package com.seonggyun.escapelog.domain.venue;
 
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.venue.exception.VenueErrorCode;
+import com.seonggyun.escapelog.domain.venue.exception.VenueException;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,12 +25,6 @@ public class Venue {
     private static final int VENUE_NAME_MAX_LENGTH = 100;
     private static final int REGION_MAX_LENGTH = 60;
 
-    private static final String ERROR_VENUE_NAME_EMPTY = "매장 이름은 비워둘 수 없습니다.";
-    private static final String ERROR_VENUE_NAME_TOO_LONG_TEMPLATE = "매장 이름은 %d자 이하로 입력해야 합니다.";
-    private static final String ERROR_REGION_TOO_LONG_TEMPLATE = "지역은 %d자 이하로 입력해야 합니다.";
-    private static final String ERROR_THEME_NULL = "테마가 null일 수 없습니다.";
-    private static final String ERROR_THEME_DUPLICATED = "이미 등록된 테마입니다.";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "venue_id")
@@ -47,27 +44,23 @@ public class Venue {
 
     private void validate() {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException(ERROR_VENUE_NAME_EMPTY);
+            throw new VenueException(VenueErrorCode.VENUE_NAME_EMPTY);
         }
         if (name.length() > VENUE_NAME_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_VENUE_NAME_TOO_LONG_TEMPLATE, VENUE_NAME_MAX_LENGTH)
-            );
+            throw new VenueException(VenueErrorCode.VENUE_NAME_TOO_LONG);
         }
 
         if (region != null && region.length() > REGION_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_REGION_TOO_LONG_TEMPLATE, REGION_MAX_LENGTH)
-            );
+            throw new VenueException(VenueErrorCode.REGION_TOO_LONG);
         }
     }
 
     public void addTheme(Theme theme) {
         if (theme == null) {
-            throw new IllegalArgumentException(ERROR_THEME_NULL);
+            throw new VenueException(VenueErrorCode.THEME_NULL);
         }
         if (themes.contains(theme)) {
-            throw new IllegalArgumentException(ERROR_THEME_DUPLICATED);
+            throw new VenueException(VenueErrorCode.THEME_DUPLICATE);
         }
         themes.add(theme);
     }

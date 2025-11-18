@@ -1,4 +1,9 @@
 package com.seonggyun.escapelog.domain.venue.exception;
 
-public class VenueException {
+import com.seonggyun.escapelog.common.BaseException;
+
+public class VenueException extends BaseException {
+    public VenueException(VenueErrorCode errorCode){
+        super(errorCode);
+    }
 }
