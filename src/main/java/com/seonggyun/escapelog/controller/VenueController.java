@@ -1,7 +1,7 @@
 package com.seonggyun.escapelog.controller;
 
 import com.seonggyun.escapelog.form.VenueForm;
-import com.seonggyun.escapelog.service.VenueService;
+import com.seonggyun.escapelog.service.venue.VenueService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

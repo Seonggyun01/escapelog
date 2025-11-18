@@ -1,6 +1,6 @@
 package com.seonggyun.escapelog.repository;
 
-import com.seonggyun.escapelog.domain.Member;
+import com.seonggyun.escapelog.domain.member.Member;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 

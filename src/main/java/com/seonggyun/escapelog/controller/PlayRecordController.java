@@ -1,9 +1,9 @@
 package com.seonggyun.escapelog.controller;
 
-import com.seonggyun.escapelog.domain.Member;
+import com.seonggyun.escapelog.domain.member.Member;
 import com.seonggyun.escapelog.form.PlayRecordForm;
-import com.seonggyun.escapelog.service.PlayRecordService;
-import com.seonggyun.escapelog.service.ThemeService;
+import com.seonggyun.escapelog.service.playRecord.PlayRecordService;
+import com.seonggyun.escapelog.service.theme.ThemeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

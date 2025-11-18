@@ -1,7 +1,7 @@
 package com.seonggyun.escapelog.repository;
 
-import com.seonggyun.escapelog.domain.Member;
-import com.seonggyun.escapelog.domain.PlayRecord;
+import com.seonggyun.escapelog.domain.member.Member;
+import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,6 @@
 package com.seonggyun.escapelog.repository;
 
-import com.seonggyun.escapelog.domain.Theme;
+import com.seonggyun.escapelog.domain.theme.Theme;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
