@@ -6,8 +6,10 @@ import com.seonggyun.escapelog.domain.theme.Theme;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import com.seonggyun.escapelog.repository.PlayRecordRepository;
 import com.seonggyun.escapelog.repository.ThemeRepository;
+import com.seonggyun.escapelog.service.member.MemberService;
 import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceErrorCode;
 import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceException;
+import com.seonggyun.escapelog.service.theme.ThemeService;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -28,8 +30,8 @@ public class PlayRecordService {
     private static final String ZERO_MINUTES = "0분";
     private static final String MINUTES_TEMPLATE = "%d분";
 
-    private final MemberRepository memberRepository;
-    private final ThemeRepository themeRepository;
+    private final MemberService memberService;
+    private final ThemeService themeService;
     private final PlayRecordRepository playRecordRepository;
 
     /**
@@ -46,11 +48,8 @@ public class PlayRecordService {
             int rating,
             String comment
     ) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new PlayRecordServiceException(PlayRecordServiceErrorCode.MEMBER_NOT_FOUND));
-
-        Theme theme = themeRepository.findById(themeId)
-                .orElseThrow(() -> new PlayRecordServiceException(PlayRecordServiceErrorCode.THEME_NOT_FOUND));
+        Member member = memberService.findOne(memberId);
+        Theme theme = themeService.findOne(themeId);
 
         PlayRecord playRecord = new PlayRecord(
                 member,
