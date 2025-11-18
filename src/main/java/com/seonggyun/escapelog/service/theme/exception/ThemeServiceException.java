@@ -1,4 +1,9 @@
 package com.seonggyun.escapelog.service.theme.exception;
 
-public class ThemeServiceException {
+import com.seonggyun.escapelog.common.BaseException;
+
+public class ThemeServiceException extends BaseException {
+    public ThemeServiceException(ThemeServiceErrorCode errorCode) {
+        super(errorCode);
+    }
 }

@@ -1,10 +1,12 @@
-package com.seonggyun.escapelog.service;
+package com.seonggyun.escapelog.service.theme;
 
 import com.seonggyun.escapelog.domain.Genre;
 import com.seonggyun.escapelog.domain.theme.Theme;
 import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.ThemeRepository;
 import com.seonggyun.escapelog.repository.VenueRepository;
+import com.seonggyun.escapelog.service.theme.exception.ThemeServiceErrorCode;
+import com.seonggyun.escapelog.service.theme.exception.ThemeServiceException;
 import java.util.List;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +29,7 @@ public class ThemeService {
                           Integer minPlayer, Integer maxPlayer, Set<Genre> genres) {
 
         Venue venue = venueRepository.findById(venueId)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_VENUE_NOT_FOUND)); //get()->orElseThrow()
+                .orElseThrow(() -> new ThemeServiceException(ThemeServiceErrorCode.VENUE_NOT_FOUND));
 
         Theme theme = new Theme(venue, title, difficulty, durationMin, minPlayer, maxPlayer, genres);
 
@@ -41,7 +43,7 @@ public class ThemeService {
 
     public Theme findOne(Long id) {
         return themeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_THEME_NOT_FOUND)); //get()->orElseThrow()
+                .orElseThrow(() -> new ThemeServiceException(ThemeServiceErrorCode.THEME_NOT_FOUND));
     }
 
     public List<Theme> findByVenueId(Long id) {
