@@ -1,4 +1,4 @@
-package com.seonggyun.escapelog.service;
+package com.seonggyun.escapelog.service.playRecord;
 
 import com.seonggyun.escapelog.domain.member.Member;
 import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
@@ -6,6 +6,8 @@ import com.seonggyun.escapelog.domain.theme.Theme;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import com.seonggyun.escapelog.repository.PlayRecordRepository;
 import com.seonggyun.escapelog.repository.ThemeRepository;
+import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceErrorCode;
+import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceException;
 import java.time.LocalDate;
 import java.util.Comparator;
 import java.util.List;
@@ -45,10 +47,10 @@ public class PlayRecordService {
             String comment
     ) {
         Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new PlayRecordServiceException(PlayRecordServiceErrorCode.MEMBER_NOT_FOUND));
 
         Theme theme = themeRepository.findById(themeId)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_THEME_NOT_FOUND));
+                .orElseThrow(() -> new PlayRecordServiceException(PlayRecordServiceErrorCode.THEME_NOT_FOUND));
 
         PlayRecord playRecord = new PlayRecord(
                 member,
@@ -77,7 +79,7 @@ public class PlayRecordService {
      */
     public PlayRecord findById(Long id) {
         return playRecordRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_PLAY_RECORD_NOT_FOUND));
+                .orElseThrow(() -> new PlayRecordServiceException(PlayRecordServiceErrorCode.PLAY_RECORD_NOT_FOUND));
     }
 
     /**
