@@ -1,8 +1,8 @@
 package com.seonggyun.escapelog.service;
 
-import com.seonggyun.escapelog.domain.Member;
-import com.seonggyun.escapelog.domain.PlayRecord;
-import com.seonggyun.escapelog.domain.Theme;
+import com.seonggyun.escapelog.domain.member.Member;
+import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
+import com.seonggyun.escapelog.domain.theme.Theme;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import com.seonggyun.escapelog.repository.PlayRecordRepository;
 import com.seonggyun.escapelog.repository.ThemeRepository;

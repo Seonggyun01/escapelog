@@ -1,6 +1,6 @@
 package com.seonggyun.escapelog.service;
 
-import com.seonggyun.escapelog.domain.Member;
+import com.seonggyun.escapelog.domain.member.Member;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;

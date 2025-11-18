@@ -1,8 +1,8 @@
 package com.seonggyun.escapelog.service;
 
 import com.seonggyun.escapelog.domain.Genre;
-import com.seonggyun.escapelog.domain.Theme;
-import com.seonggyun.escapelog.domain.Venue;
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.ThemeRepository;
 import com.seonggyun.escapelog.repository.VenueRepository;
 import java.util.List;

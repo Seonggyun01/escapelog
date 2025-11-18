@@ -1,6 +1,6 @@
 package com.seonggyun.escapelog.service;
 
-import com.seonggyun.escapelog.domain.Venue;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.VenueRepository;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
