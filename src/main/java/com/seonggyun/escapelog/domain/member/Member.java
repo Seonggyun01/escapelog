@@ -1,14 +1,19 @@
-package com.seonggyun.escapelog.domain;
+package com.seonggyun.escapelog.domain.member;
 
+import com.seonggyun.escapelog.domain.member.exception.MemberErrorCode;
+import com.seonggyun.escapelog.domain.member.exception.MemberException;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.time.LocalDateTime;
 import java.util.regex.Pattern;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Getter
@@ -26,17 +31,6 @@ public class Member {
 
     private static final int NAME_MAX_LENGTH = 50;
 
-    private static final String ERROR_LOGIN_ID_EMPTY = "로그인 ID는 비어 있을 수 없습니다.";
-    private static final String ERROR_LOGIN_ID_INVALID = "로그인 ID는 영문, 숫자, 특수문자(!@#$%^&*()_+=-)만 사용할 수 있습니다.";
-    private static final String ERROR_PASSWORD_EMPTY = "비밀번호는 비어 있을 수 없습니다.";
-    private static final String ERROR_PASSWORD_INVALID = "비밀번호는 영문, 숫자, 특수문자(!@#$%^&*()_+=-)만 사용할 수 있습니다.";
-    private static final String ERROR_NAME_EMPTY = "이름은 비어 있을 수 없습니다.";
-    private static final String ERROR_NAME_INVALID = "이름에는 한글, 영어, 숫자만 사용할 수 있습니다.";
-
-    private static final String ERROR_LOGIN_ID_LENGTH_TEMPLATE = "로그인 ID는 %d자 이상 %d자 이하여야 합니다.";
-    private static final String ERROR_PASSWORD_LENGTH_TEMPLATE = "비밀번호는 %d자 이상 %d자 이하여야 합니다.";
-    private static final String ERROR_NAME_LENGTH_TEMPLATE = "이름은 %d자 이하로 입력해주세요.";
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -49,6 +43,10 @@ public class Member {
 
     @Column(nullable = false, unique = true)
     private String name;
+
+//    @Column(name = "created_at", nullable = false)
+//    @CreatedDate
+//    private LocalDateTime createdAt;
 
     public Member(String loginId, String password, String name) {
         this.loginId = loginId;
@@ -65,55 +63,49 @@ public class Member {
 
     private void validateLoginId() {
         if (loginId == null || loginId.isBlank()) {
-            throw new IllegalArgumentException(ERROR_LOGIN_ID_EMPTY);
+            throw new MemberException(MemberErrorCode.LOGIN_ID_EMPTY);
         }
 
         int len = loginId.length();
         if (len < LOGIN_ID_MIN_LENGTH || len > LOGIN_ID_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_LOGIN_ID_LENGTH_TEMPLATE, LOGIN_ID_MIN_LENGTH, LOGIN_ID_MAX_LENGTH)
-            );
+            throw new MemberException(MemberErrorCode.LOGIN_ID_LENGTH_INVALID);
         }
 
         if (!LOGIN_ID_PATTERN.matcher(loginId).matches()) {
-            throw new IllegalArgumentException(ERROR_LOGIN_ID_INVALID);
+            throw new MemberException(MemberErrorCode.LOGIN_ID_FORMAT_INVALID);
         }
     }
 
     private void validatePassword() {
         if (password == null || password.isBlank()) {
-            throw new IllegalArgumentException(ERROR_PASSWORD_EMPTY);
+            throw new MemberException(MemberErrorCode.PASSWORD_EMPTY);
         }
 
         int len = password.length();
         if (len < PASSWORD_MIN_LENGTH || len > PASSWORD_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_PASSWORD_LENGTH_TEMPLATE, PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH)
-            );
+            throw new MemberException(MemberErrorCode.PASSWORD_LENGTH_INVALID);
         }
 
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
-            throw new IllegalArgumentException(ERROR_PASSWORD_INVALID);
+            throw new MemberException(MemberErrorCode.PASSWORD_FORMAT_INVALID);
         }
     }
 
     private void validateName() {
         if (name == null || name.isBlank()) {
-            throw new IllegalArgumentException(ERROR_NAME_EMPTY);
+            throw new MemberException(MemberErrorCode.NAME_EMPTY);
         }
         if (name.length() > NAME_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_NAME_LENGTH_TEMPLATE, NAME_MAX_LENGTH)
-            );
+            throw new MemberException(MemberErrorCode.NAME_LENGTH_INVALID);
         }
         if (!NAME_PATTERN.matcher(name).matches()) {
-            throw new IllegalArgumentException(ERROR_NAME_INVALID);
+            throw new MemberException(MemberErrorCode.NAME_FORMAT_INVALID);
         }
     }
 
     public void updateName(String name) {
         this.name = name;
-        validate();
+        validateName();
     }
 
     @Override

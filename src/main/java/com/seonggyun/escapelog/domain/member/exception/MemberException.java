@@ -1,4 +1,9 @@
 package com.seonggyun.escapelog.domain.member.exception;
 
-public class MemberException {
+import com.seonggyun.escapelog.common.BaseException;
+
+public class MemberException extends BaseException {
+    public MemberException(MemberErrorCode errorCode){
+        super(errorCode);
+    }
 }

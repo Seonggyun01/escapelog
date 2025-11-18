@@ -1,4 +1,4 @@
-package com.seonggyun.escapelog.domain.member;
+package com.seonggyun.escapelog.domain.member.exception;
 
 import com.seonggyun.escapelog.common.ErrorCode;
 import lombok.Getter;
