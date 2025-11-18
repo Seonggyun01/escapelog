@@ -1,7 +1,9 @@
-package com.seonggyun.escapelog.service;
+package com.seonggyun.escapelog.service.venue;
 
 import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.VenueRepository;
+import com.seonggyun.escapelog.service.venue.exception.VenueServiceErrorCode;
+import com.seonggyun.escapelog.service.venue.exception.VenueServiceException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,7 +31,7 @@ public class VenueService {
 
     public Venue findOne(Long id) {
         return venueRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException(ERROR_VENUE_NOT_FOUND)); // get()->orElseThrow()
+                .orElseThrow(() -> new VenueServiceException(VenueServiceErrorCode.VENUE_NOT_FOUND)); // get()->orElseThrow()
     }
 
     public List<Venue> findByName(String name) {
