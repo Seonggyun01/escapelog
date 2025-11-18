@@ -1,4 +1,9 @@
 package com.seonggyun.escapelog.domain.theme.exception;
 
-public class ThemeException {
+import com.seonggyun.escapelog.common.BaseException;
+
+public class ThemeException extends BaseException {
+    public ThemeException(ThemeErrorCode errorCode){
+        super(errorCode);
+    }
 }

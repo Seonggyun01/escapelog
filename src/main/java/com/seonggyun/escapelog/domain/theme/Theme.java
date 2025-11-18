@@ -1,5 +1,9 @@
-package com.seonggyun.escapelog.domain;
+package com.seonggyun.escapelog.domain.theme;
 
+import com.seonggyun.escapelog.domain.Genre;
+import com.seonggyun.escapelog.domain.theme.exception.ThemeErrorCode;
+import com.seonggyun.escapelog.domain.theme.exception.ThemeException;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -31,17 +35,6 @@ public class Theme {
     private static final int DURATION_MAX = 300;
 
     private static final int MIN_PLAYER_MIN = 1;
-
-    private static final String ERROR_VENUE_REQUIRED = "테마는 매장에 속해야 합니다.";
-    private static final String ERROR_TITLE_EMPTY = "테마 제목은 비어 있을 수 없습니다.";
-    private static final String ERROR_TITLE_LENGTH_TEMPLATE = "테마 제목은 %d자 이하로 입력해야 합니다.";
-    private static final String ERROR_DIFFICULTY_REQUIRED = "난이도는 필수입니다.";
-    private static final String ERROR_DIFFICULTY_RANGE_TEMPLATE = "난이도는 %d~%d 사이여야 합니다.";
-    private static final String ERROR_DURATION_REQUIRED = "플레이 시간은 필수입니다.";
-    private static final String ERROR_DURATION_RANGE_TEMPLATE = "플레이 시간은 %d~%d분 사이여야 합니다.";
-    private static final String ERROR_MIN_PLAYER_INVALID = "최소 인원은 1명 이상입니다.";
-    private static final String ERROR_MAX_PLAYER_INVALID = "최대 인원은 최소 인원보다 작을 수 없습니다.";
-    private static final String ERROR_GENRE_REQUIRED = "하나 이상의 장르가 필요합니다.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -87,57 +80,49 @@ public class Theme {
 
     private void validateVenue() {
         if (venue == null) {
-            throw new IllegalArgumentException(ERROR_VENUE_REQUIRED);
+            throw new ThemeException(ThemeErrorCode.VENUE_REQUIRED);
         }
     }
 
     private void validateTitle() {
         if (title == null || title.isBlank()) {
-            throw new IllegalArgumentException(ERROR_TITLE_EMPTY);
+            throw new ThemeException(ThemeErrorCode.TITLE_EMPTY);
         }
         if (title.length() > TITLE_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_TITLE_LENGTH_TEMPLATE, TITLE_MAX_LENGTH)
-            );
+            throw new ThemeException(ThemeErrorCode.TITLE_LENGTH_INVALID);
         }
     }
 
     private void validateDifficulty() {
         if (difficulty == null) {
-            throw new IllegalArgumentException(ERROR_DIFFICULTY_REQUIRED);
+            throw new ThemeException(ThemeErrorCode.DIFFICULTY_REQUIRED);
         }
         if (difficulty < DIFFICULTY_MIN || difficulty > DIFFICULTY_MAX) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_DIFFICULTY_RANGE_TEMPLATE,
-                            DIFFICULTY_MIN, DIFFICULTY_MAX)
-            );
+            throw new ThemeException(ThemeErrorCode.DIFFICULTY_RANGE_INVALID);
         }
     }
 
     private void validateDuration() {
         if (durationMin == null) {
-            throw new IllegalArgumentException(ERROR_DURATION_REQUIRED);
+            throw new ThemeException(ThemeErrorCode.DURATION_REQUIRED);
         }
         if (durationMin < DURATION_MIN || durationMin > DURATION_MAX) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_DURATION_RANGE_TEMPLATE,
-                            DURATION_MIN, DURATION_MAX)
-            );
+            throw new ThemeException(ThemeErrorCode.DURATION_RANGE_INVALID);
         }
     }
 
     private void validatePlayers() {
         if (minPlayer == null || minPlayer < MIN_PLAYER_MIN) {
-            throw new IllegalArgumentException(ERROR_MIN_PLAYER_INVALID);
+            throw new ThemeException(ThemeErrorCode.MIN_PLAYER_INVALID);
         }
         if (maxPlayer == null || maxPlayer < minPlayer) {
-            throw new IllegalArgumentException(ERROR_MAX_PLAYER_INVALID);
+            throw new ThemeException(ThemeErrorCode.MAX_PLAYER_INVALID);
         }
     }
 
     private void validateGenre() {
         if (genres == null || genres.isEmpty()) {
-            throw new IllegalArgumentException(ERROR_GENRE_REQUIRED);
+            throw new ThemeException(ThemeErrorCode.GENRE_REQUIRED);
         }
     }
 
