@@ -1,4 +1,9 @@
 package com.seonggyun.escapelog.domain.playRecord.exception;
 
-public class PlayRecordException {
+import com.seonggyun.escapelog.common.BaseException;
+
+public class PlayRecordException extends BaseException {
+    public PlayRecordException(PlayRecordErrorCode errorCode){
+        super(errorCode);
+    }
 }

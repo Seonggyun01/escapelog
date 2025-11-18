@@ -1,5 +1,9 @@
-package com.seonggyun.escapelog.domain;
+package com.seonggyun.escapelog.domain.playRecord;
 
+import com.seonggyun.escapelog.domain.playRecord.exception.PlayRecordErrorCode;
+import com.seonggyun.escapelog.domain.playRecord.exception.PlayRecordException;
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.member.Member;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -23,18 +27,6 @@ public class PlayRecord {
     private static final int RATING_MAX = 5;
 
     private static final int COMMENT_MAX_LENGTH = 500;
-
-    private static final String ERROR_MEMBER_REQUIRED = "회원 정보가 누락되었습니다.";
-    private static final String ERROR_THEME_REQUIRED = "테마 정보가 누락되었습니다.";
-    private static final String ERROR_PLAY_DATE_REQUIRED = "플레이 날짜는 필수입니다.";
-    private static final String ERROR_PLAY_DATE_FUTURE = "플레이 날짜는 미래일 수 없습니다.";
-    private static final String ERROR_CLEARED_REQUIRED = "성공 여부는 필수입니다.";
-    private static final String ERROR_CLEAR_TIME_REQUIRED = "성공한 기록에는 유효한 클리어 시간이 필요합니다.";
-    private static final String ERROR_CLEAR_TIME_FORBIDDEN = "실패한 기록에는 클리어 시간을 입력할 수 없습니다.";
-    private static final String ERROR_HINT_NEGATIVE = "힌트 사용 개수는 음수일 수 없습니다.";
-
-    private static final String ERROR_RATING_RANGE_TEMPLATE = "평점은 %d~%d점 사이여야 합니다.";
-    private static final String ERROR_COMMENT_LENGTH_TEMPLATE = "후기는 %d자 이하로 입력해주세요.";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -84,62 +76,58 @@ public class PlayRecord {
 
     private void validateMember() {
         if (member == null) {
-            throw new IllegalArgumentException(ERROR_MEMBER_REQUIRED);
+            throw new PlayRecordException(PlayRecordErrorCode.MEMBER_REQUIRED);
         }
     }
 
     private void validateTheme() {
         if (theme == null) {
-            throw new IllegalArgumentException(ERROR_THEME_REQUIRED);
+            throw new PlayRecordException(PlayRecordErrorCode.THEME_REQUIRED);
         }
     }
 
     private void validatePlayDate() {
         if (playDate == null) {
-            throw new IllegalArgumentException(ERROR_PLAY_DATE_REQUIRED);
+            throw new PlayRecordException(PlayRecordErrorCode.PLAY_DATE_REQUIRED);
         }
         if (playDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException(ERROR_PLAY_DATE_FUTURE);
+            throw new PlayRecordException(PlayRecordErrorCode.PLAY_DATE_IN_FUTURE);
         }
     }
 
     private void validateCleared() {
         if (cleared == null) {
-            throw new IllegalArgumentException(ERROR_CLEARED_REQUIRED);
+            throw new PlayRecordException(PlayRecordErrorCode.CLEARED_REQUIRED);
         }
     }
 
     private void validateClearTime() {
         if (cleared) {
             if (clearTimeSec <= 0) {
-                throw new IllegalArgumentException(ERROR_CLEAR_TIME_REQUIRED);
+                throw new PlayRecordException(PlayRecordErrorCode.CLEAR_TIME_REQUIRED);
             }
         } else {
             if (clearTimeSec != 0) {
-                throw new IllegalArgumentException(ERROR_CLEAR_TIME_FORBIDDEN);
+                throw new PlayRecordException(PlayRecordErrorCode.CLEAR_TIME_FORBIDDEN);
             }
         }
     }
 
     private void validateHintCount() {
         if (hintCount < 0) {
-            throw new IllegalArgumentException(ERROR_HINT_NEGATIVE);
+            throw new PlayRecordException(PlayRecordErrorCode.HINT_COUNT_NEGATIVE);
         }
     }
 
     private void validateRating() {
         if (rating < RATING_MIN || rating > RATING_MAX) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_RATING_RANGE_TEMPLATE, RATING_MIN, RATING_MAX)
-            );
+            throw new PlayRecordException(PlayRecordErrorCode.RATING_RANGE_INVALID);
         }
     }
 
     private void validateComment() {
         if (comment != null && comment.length() > COMMENT_MAX_LENGTH) {
-            throw new IllegalArgumentException(
-                    String.format(ERROR_COMMENT_LENGTH_TEMPLATE, COMMENT_MAX_LENGTH)
-            );
+            throw new PlayRecordException(PlayRecordErrorCode.COMMENT_LENGTH_INVALID);
         }
     }
 
