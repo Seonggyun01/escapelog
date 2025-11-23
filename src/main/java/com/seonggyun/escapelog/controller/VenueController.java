@@ -1,8 +1,10 @@
 package com.seonggyun.escapelog.controller;
 
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.form.VenueForm;
 import com.seonggyun.escapelog.service.venue.VenueService;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,12 +44,23 @@ public class VenueController {
         return "redirect:/venues";
     }
 
-    /**
-     * 매장 목록 조회
-     */
+//    /**
+//     * 매장 목록 조회
+//     */
+//    @GetMapping
+//    public String listVenues(Model model) {
+//        model.addAttribute("venues", venueService.findAll());
+//        return "venuePages/venueList";
+//    }
+
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("venues", venueService.findAll());
+    public String searchVenues(@RequestParam(value = "keyword", required = false) String keyword,
+                               @RequestParam(value = "sort", required = false) String sort,
+                               Model model) {
+        List<Venue> venues = venueService.searchVenues(keyword, sort);
+        model.addAttribute("venues", venues);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("sort", sort);
         return "venuePages/venueList";
     }
 }
