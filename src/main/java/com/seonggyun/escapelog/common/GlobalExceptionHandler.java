@@ -23,6 +23,6 @@ public class GlobalExceptionHandler {
                 "UNEXPECTED_ERROR",
                 "알 수 없는 서버 오류가 발생했습니다."
         ));
-        return "error/custom-error";
+        return "error/customError";
     }
 }
