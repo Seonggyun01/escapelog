@@ -4,10 +4,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.seonggyun.escapelog.domain.Genre;
-import com.seonggyun.escapelog.domain.Theme;
-import com.seonggyun.escapelog.domain.Venue;
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.ThemeRepository;
 import com.seonggyun.escapelog.repository.VenueRepository;
+import com.seonggyun.escapelog.service.theme.ThemeService;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -22,9 +23,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class ThemeServiceTest {
 
-    @Autowired ThemeService themeService;
-    @Autowired ThemeRepository themeRepository;
-    @Autowired VenueRepository venueRepository;
+    @Autowired
+    ThemeService themeService;
+    @Autowired
+    ThemeRepository themeRepository;
+    @Autowired
+    VenueRepository venueRepository;
 
     Venue gangnam;
     Venue hongdae;

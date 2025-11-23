@@ -2,8 +2,9 @@ package com.seonggyun.escapelog.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.seonggyun.escapelog.domain.Venue;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.VenueRepository;
+import com.seonggyun.escapelog.service.venue.VenueService;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class VenueServiceTest {
 
-    @Autowired VenueService venueService;
-    @Autowired VenueRepository venueRepository;
+    @Autowired
+    VenueService venueService;
+    @Autowired
+    VenueRepository venueRepository;
 
     @BeforeEach
     void setUp() {
