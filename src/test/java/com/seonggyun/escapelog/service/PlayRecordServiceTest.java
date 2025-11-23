@@ -3,14 +3,16 @@ package com.seonggyun.escapelog.service;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.seonggyun.escapelog.domain.Genre;
-import com.seonggyun.escapelog.domain.Member;
-import com.seonggyun.escapelog.domain.PlayRecord;
-import com.seonggyun.escapelog.domain.Theme;
-import com.seonggyun.escapelog.domain.Venue;
+import com.seonggyun.escapelog.domain.member.Member;
+import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import com.seonggyun.escapelog.repository.MemberRepository;
 import com.seonggyun.escapelog.repository.PlayRecordRepository;
 import com.seonggyun.escapelog.repository.ThemeRepository;
 import com.seonggyun.escapelog.repository.VenueRepository;
+import com.seonggyun.escapelog.service.playRecord.PlayRecordService;
+import com.seonggyun.escapelog.service.theme.ThemeService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
@@ -25,12 +27,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 class PlayRecordServiceTest {
 
-    @Autowired PlayRecordService playRecordService;
-    @Autowired ThemeService themeService;
-    @Autowired MemberRepository memberRepository;
-    @Autowired ThemeRepository themeRepository;
-    @Autowired VenueRepository venueRepository;
-    @Autowired PlayRecordRepository playRecordRepository;
+    @Autowired
+    PlayRecordService playRecordService;
+    @Autowired
+    ThemeService themeService;
+    @Autowired
+    MemberRepository memberRepository;
+    @Autowired
+    ThemeRepository themeRepository;
+    @Autowired
+    VenueRepository venueRepository;
+    @Autowired
+    PlayRecordRepository playRecordRepository;
 
     Member member1;
     Member member2;
@@ -72,7 +80,15 @@ class PlayRecordServiceTest {
     }
 
     private Member saveMember(String name) {
-        return memberRepository.save(new Member(name));
+        String loginId;
+        switch (name) {
+            case "성균" -> loginId = "testUser1";
+            case "재윤" -> loginId = "testUser2";
+            case "새로운유저" -> loginId = "testUser3";
+            default -> loginId = "test" + Math.abs(name.hashCode()); // fallback용
+        }
+        String password = "Pw12345!"; // 규칙에 맞는 고정 테스트 비밀번호
+        return memberRepository.save(new Member(loginId, password, name));
     }
 
     private Theme findTheme(Long id) {
