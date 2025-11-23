@@ -1,11 +1,13 @@
 package com.seonggyun.escapelog.controller;
 
 import com.seonggyun.escapelog.domain.member.Member;
+import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
 import com.seonggyun.escapelog.form.PlayRecordForm;
 import com.seonggyun.escapelog.service.playRecord.PlayRecordService;
 import com.seonggyun.escapelog.service.theme.ThemeService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequiredArgsConstructor
@@ -65,8 +68,16 @@ public class PlayRecordController {
      * 후기 목록 조회
      */
     @GetMapping
-    public String list(Model model) {
-        model.addAttribute("playRecords", playRecordService.findAll());
+    public String listPlayRecord(@RequestParam(value = "keyword", required = false) String keyword,
+                                 @RequestParam(value = "sort", required = false) String sort,
+                                 @RequestParam(value = "cleared",required = false) Boolean cleared,
+                                 Model model) {
+
+        List<PlayRecord> playRecords = playRecordService.searchPlayRecord(keyword, sort, cleared);
+
+        model.addAttribute("playRecords", playRecords);
+        model.addAttribute("sort", sort);
+        model.addAttribute("cleared", cleared);
         return "playRecordPages/playRecordList";
     }
 }

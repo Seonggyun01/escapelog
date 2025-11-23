@@ -3,14 +3,13 @@ package com.seonggyun.escapelog.service.playRecord;
 import com.seonggyun.escapelog.domain.member.Member;
 import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
 import com.seonggyun.escapelog.domain.theme.Theme;
-import com.seonggyun.escapelog.repository.MemberRepository;
 import com.seonggyun.escapelog.repository.PlayRecordRepository;
-import com.seonggyun.escapelog.repository.ThemeRepository;
 import com.seonggyun.escapelog.service.member.MemberService;
 import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceErrorCode;
 import com.seonggyun.escapelog.service.playRecord.exception.PlayRecordServiceException;
 import com.seonggyun.escapelog.service.theme.ThemeService;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +32,45 @@ public class PlayRecordService {
     private final MemberService memberService;
     private final ThemeService themeService;
     private final PlayRecordRepository playRecordRepository;
+
+    public List<PlayRecord> searchPlayRecord(String keyword, String sort, Boolean cleared) {
+        List<PlayRecord> playRecords = new ArrayList<>();
+
+        if (keyword == null || keyword.isBlank()) {
+            playRecords = playRecordRepository.findAll();
+        }
+        if (keyword != null && !keyword.isBlank()) {
+            String trimmed = keyword.trim();
+            playRecords = playRecordRepository.findByTheme_TitleContainingIgnoreCaseOrTheme_Venue_NameContainingIgnoreCase(
+                    trimmed, trimmed);
+        }
+
+        playRecords = filterCleared(playRecords, cleared);
+        applySort(playRecords, sort);
+
+        return playRecords;
+    }
+
+    private List<PlayRecord> filterCleared(List<PlayRecord> playRecords, Boolean cleared) {
+        if (cleared == null) {
+            return playRecords;
+        }
+        return playRecords.stream()
+                .filter(playRecord -> playRecord.getCleared().equals(cleared))
+                .collect(Collectors.toList());
+    }
+
+    private void applySort(List<PlayRecord> playRecords, String sort) {
+        if (sort == null || sort.isBlank()) {
+            return;
+        }
+        if ("dateAsc".equals(sort)) {
+            playRecords.sort(Comparator.comparing(PlayRecord::getPlayDate));
+        }
+        if ("dateDesc".equals(sort)) {
+            playRecords.sort(Comparator.comparing(PlayRecord::getPlayDate).reversed());
+        }
+    }
 
     /**
      * 플레이기록 저장

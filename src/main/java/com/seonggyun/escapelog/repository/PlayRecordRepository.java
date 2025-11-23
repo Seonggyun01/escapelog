@@ -44,4 +44,6 @@ public interface PlayRecordRepository extends JpaRepository<PlayRecord, Long> {
      */
     @Query("SELECT AVG(pr.clearTimeSec) FROM PlayRecord pr WHERE pr.member = :member AND pr.clearTimeSec > 0")
     Double findAverageClearTimeByMember(@Param("member") Member member);
+
+    List<PlayRecord> findByTheme_TitleContainingIgnoreCaseOrTheme_Venue_NameContainingIgnoreCase(String themeTitle, String venueName);
 }
