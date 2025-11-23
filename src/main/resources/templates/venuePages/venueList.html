@@ -13,12 +13,74 @@
 
 <main class="container py-5">
 
-    <h2 class="mb-4">📍 등록된 매장 목록</h2>
-
-    <div class="d-flex justify-content-end mb-3">
-        <a th:href="@{/venues/new}" class="btn btn-primary">＋ 새 매장 등록</a>
+    <!-- 제목 + 새 매장 등록 버튼 -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">📍 등록된 매장 목록</h2>
+        <a th:href="@{/venues/new}" class="btn btn-primary">
+            ＋ 새 매장 등록
+        </a>
     </div>
 
+    <!-- 🔍 검색 + 정렬 -->
+    <form th:action="@{/venues}" method="get" class="d-flex flex-column gap-2 mb-4">
+
+        <!-- 🔍 검색 영역 -->
+        <div class="d-flex align-items-center mb-3">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="매장명 또는 지역으로 검색"
+                   th:value="${keyword}">
+
+            <button type="submit"
+                    name="action"
+                    value="search"
+                    class="btn btn-outline-secondary"
+                    style="
+                border-radius: 16px;
+                padding: 10px 18px;
+                margin-left: 12px;
+                min-width: 80px;
+            ">
+                검색
+            </button>
+        </div>
+
+        <!-- 3줄: 정렬 옵션 + 적용 버튼 -->
+        <div class="d-flex justify-content-end align-items-center gap-3 sort-group">
+
+            <select id="sortSelect"
+                    name="sort"
+                    class="form-select"
+                    style="max-width: 220px;">
+                <option value=""
+                        th:selected="${sort} == null or sort == ''">
+                    정렬 없음
+                </option>
+                <option th:value="'nameAsc'"
+                        th:selected="${sort} == 'nameAsc'">
+                    이름순(ㄱ-ㅎ)
+                </option>
+                <option th:value="'nameDesc'"
+                        th:selected="${sort} == 'nameDesc'">
+                    이름 역순(ㅎ-ㄱ)
+                </option>
+            </select>
+
+            <button type="submit"
+                    name="action"
+                    value="sort"
+                    class="btn btn-outline-primary round-btn">
+                적용
+            </button>
+
+            <a th:href="@{/venues}" class="btn btn-outline-secondary round-btn">
+                초기화
+            </a>
+        </div>
+    </form>
+
+    <!-- 📋 매장 리스트 테이블 -->
     <table class="table table-hover align-middle shadow-sm bg-card">
         <thead class="table-light">
         <tr>
