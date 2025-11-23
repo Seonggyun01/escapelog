@@ -2,23 +2,28 @@ package com.seonggyun.escapelog.domain;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 
+import com.seonggyun.escapelog.domain.member.Member;
+import com.seonggyun.escapelog.domain.playRecord.PlayRecord;
+import com.seonggyun.escapelog.domain.theme.Theme;
+import com.seonggyun.escapelog.domain.venue.Venue;
 import java.time.LocalDate;
 import java.util.EnumSet;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PlayRecordTest {
+
     Member member;
     Theme theme;
     Venue venue;
 
     @BeforeEach
-    void 멤버_테마_생성(){
-        member = new Member("aaa");
+    void 멤버_테마_생성() {
+        member = new Member("user01", "passw1!", "홍성균");
         venue = new Venue("방탈출", "서울");
-        theme = new Theme(venue, "theme1", 3, 60, 1, 6, EnumSet.of(Genre.MYSTERY, Genre.THRILLER));
+        theme = new Theme(venue, "theme1", 3, 60, 1, 6,
+                EnumSet.of(Genre.MYSTERY, Genre.THRILLER));
     }
 
     @Test
